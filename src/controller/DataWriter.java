@@ -81,8 +81,8 @@ public class DataWriter {
     public void grabData(DotsGameController dgc) {
         this.player = dgc.getThePlayer();
         this.dotsPair = dgc.getCurrentDotsPair();
-        this.colorOne = dgc.getDotsColorOne().toString();
-        this.colorTwo = dgc.getDotsColorTwo().toString();
+        this.colorOne = dgc.getDotsColorOne().toString().substring(2, 8);
+        this.colorTwo = dgc.getDotsColorTwo().toString().substring(2, 8);
         this.questionType = dgc.getQuestionType();
     }
     

@@ -43,8 +43,8 @@ public final class SetUp {
         
     /** Width and height of the computer's screen */
     static final Rectangle2D primaryScreenBounds = Screen.getPrimary().getBounds();
-    static final double SCREEN_WIDTH = primaryScreenBounds.getWidth();
-    static final double SCREEN_HEIGHT = primaryScreenBounds.getHeight();
+    public static final double SCREEN_WIDTH = primaryScreenBounds.getWidth();
+    public static final double SCREEN_HEIGHT = primaryScreenBounds.getHeight();
     
     /**
      * Game Screen. */
@@ -196,7 +196,7 @@ public final class SetUp {
         view.getBlockComplete().setTextAlignment(TextAlignment.CENTER);
         view.getBlockComplete().setFont(new Font("Tahoma", 50));
         view.getBlockComplete().setFill(Color.WHITE);
-        view.getBlockComplete().setWrappingWidth(SCREEN_WIDTH * .9);
+        view.getBlockComplete().setWrappingWidth(1000);
         view.setStartAssessment(new Button(Strings.START_ASSESSMENT_EN));
         view.getBlockComplete().setLayoutY(SetUp.SCREEN_HEIGHT * .3);
         view.getBlockComplete().setLayoutX(SetUp.SCREEN_WIDTH / 2 - view.getBlockComplete().getWrappingWidth() / 2);
@@ -204,14 +204,18 @@ public final class SetUp {
         view.getStartAssessment().setLayoutY(SetUp.SCREEN_HEIGHT * .8);
         view.getStartAssessment().setLayoutX(SetUp.SCREEN_WIDTH / 2 - view.getStartAssessment().getPrefWidth() / 2);
         
-        view.setPreviewQuestionCanvas(new Canvas(SCREEN_WIDTH * .8, SCREEN_HEIGHT * .2));
-        view.getPreviewQuestionCanvas().setLayoutX(SCREEN_WIDTH * .1);
-        view.getPreviewQuestionCanvas().setLayoutY(SCREEN_HEIGHT * .4);
+        view.setPreviewQuestionCanvas(new Canvas(1000, 1000));
+
         
         view.getLayout().getChildren().setAll(view.getBlockComplete(), view.getStartAssessment(),
                 view.getLeftKeyGuide(), view.getRightKeyGuide(), view.getPreviewQuestionCanvas());
+        
+        view.getPreviewQuestionCanvas().setLayoutX(view.getBlockComplete().getLayoutX());
+        view.getPreviewQuestionCanvas().setLayoutY(view.getBlockComplete().getLayoutY());
+        
         view.getScene().setCursor(Cursor.DEFAULT);
         view.getBlockComplete().requestFocus();
+        view.getStartAssessment().toFront();
     }
     
     /**
@@ -245,22 +249,21 @@ public final class SetUp {
         view.getQuestion().setFont(new Font("Tahoma", 50));
         view.getQuestion().setTextFill(Color.WHITE);
         
-        view.setQuestionCanvas(new Canvas(SCREEN_WIDTH * .8, SCREEN_HEIGHT * .2));
-        view.getQuestionCanvas().setLayoutX(SCREEN_WIDTH * .1);
-        view.getQuestionCanvas().setLayoutY(SCREEN_HEIGHT * .35);
+        view.setQuestionCanvas(new Canvas(1000, 1000));
         
         view.setNumberSlider(new Slider(0, NUMBER_SLIDER_MAX, NUMBER_SLIDER_MAX / 2));
-        view.getNumberSlider().setBlockIncrement(1);
+        view.getNumberSlider().setBlockIncrement(0);
         view.getNumberSlider().setVisible(false);
         view.getNumberSlider().setScaleY(2.0);
         view.getNumberSlider().setPrefWidth(400.0);
         view.getNumberSlider().setShowTickLabels(true);
         view.getNumberSlider().setShowTickMarks(true);
         view.getNumberSlider().setMajorTickUnit(10.0);
-        view.getNumberSlider().setMinorTickCount(2);
+        view.getNumberSlider().setMinorTickCount(1);
         view.getNumberSlider().setSnapToPixel(true);
+        view.getNumberSlider().setValue(0.0);
         
-        view.setNumberSliderPreview(new Label("25"));
+        view.setNumberSliderPreview(new Label(""));
         view.getNumberSliderPreview().setFont(new Font("Tahoma", 40));
         view.getNumberSliderPreview().setVisible(false);
         view.getNumberSliderPreview().setTextFill(Color.WHITE);
@@ -275,6 +278,8 @@ public final class SetUp {
                 view.getDotsCanvas(), view.getPractice(), view.getQuestion(), view.getQuestionCanvas(), view.getPressSpaceText(),
                 view.getMask(), view.getNumberSlider(), view.getNumberSliderPreview());
         
+        view.getScene().getStylesheets().add("res/css/stylesheet.css");
+        
         view.getGetReadyBox().setPrefHeight(SCREEN_HEIGHT * .1);
         view.getGetReadyBox().setPrefWidth(SCREEN_WIDTH * .4);    
         view.getGetReadyBox().setLayoutY((SetUp.SCREEN_HEIGHT / 2) - view.getGetReadyBox().getPrefHeight());
@@ -286,16 +291,19 @@ public final class SetUp {
         view.getPractice().setLayoutX((SetUp.SCREEN_WIDTH / 2) - (view.getPractice().getPrefWidth() / 2));
         view.getPractice().setLayoutY(SetUp.SCREEN_HEIGHT * .04);
         
-        view.getQuestion().setPrefHeight(SCREEN_HEIGHT * .2);
-        view.getQuestion().setPrefWidth(SCREEN_WIDTH * .8);
+        view.getQuestion().setPrefHeight(200);
+        view.getQuestion().setPrefWidth(1000);
         view.getQuestion().setAlignment(Pos.CENTER);
         view.getQuestion().setLayoutX((SCREEN_WIDTH / 2) - (view.getQuestion().getPrefWidth() / 2));
         view.getQuestion().setLayoutY(SCREEN_HEIGHT * .35);
         
+        view.getQuestionCanvas().setLayoutX(view.getQuestion().getLayoutX());
+        view.getQuestionCanvas().setLayoutY(view.getQuestion().getLayoutY());
+        
         view.getPressSpaceText().setPrefHeight(SCREEN_HEIGHT * .2);
         view.getPressSpaceText().setPrefWidth(SCREEN_WIDTH * .8);
         view.getPressSpaceText().setAlignment(Pos.CENTER);
-        view.getPressSpaceText().setLayoutX((SetUp.SCREEN_WIDTH / 2) - (view.getQuestion().getPrefWidth() / 2));
+        view.getPressSpaceText().setLayoutX((SetUp.SCREEN_WIDTH / 2) - (view.getPressSpaceText().getPrefWidth() / 2));
         view.getPressSpaceText().setLayoutY(SetUp.SCREEN_HEIGHT * .35);
         view.getPressSpaceText().setFont(new Font("Tahoma", 30));
         view.getPressSpaceText().setTextFill(Color.WHITE);

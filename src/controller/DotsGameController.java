@@ -21,8 +21,10 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import view.GameGUI;
+import view.SetUp;
 
 /**
  * 
@@ -338,6 +340,7 @@ public class DotsGameController implements GameController {
                 if ((event.getCode() == KeyCode.F 
                         || event.getCode() == KeyCode.J) 
                         && !feedback_given
+                        && questionType == QuestionType.WHICH_SIDE_MORE
                         && (gameState == GameState.WAITING_FOR_RESPONSE 
                         || (questionType == QuestionType.WHICH_SIDE_MORE
                         	&& (gameState == GameState.MASK
@@ -356,6 +359,16 @@ public class DotsGameController implements GameController {
                     gameState = GameState.DISPLAYING_DOTS;
                 }
             }
+        });
+        theView.getNumberSlider().setOnMouseReleased(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				if (gameState != GameState.PRESS_SPACE_TO_CONTINUE && theView.getNumberSliderPreview().getText() != "") {
+					gameController.setSubjectTotalDots(theView.getNumberSlider().valueProperty().intValue());
+					gameController.handlePressForJ(null);
+				}
+			}
+        	
         });
         theView.getNumberSlider().valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
@@ -411,11 +424,11 @@ public class DotsGameController implements GameController {
         boolean correct = false;
         if (this.questionType == QuestionType.WHICH_SIDE_MORE) {
             this.setYesCorrect(GameLogic.checkWhichSideCorrect(dp, dpg.getBlockMode()));
-            correct = GameLogic.checkAnswerCorrect(e, this.yesCorrect, this.FforTrue);
+            correct = GameLogic.checkAnswerCorrect(e, this.yesCorrect, this.FforTrue);}
             //this.feedbackSound(correct);
-        } else if (this.questionType == QuestionType.HOW_MANY_TOTAL) {
-            this.setSubjectTotalDots(theView.getNumberSlider().valueProperty().getValue().intValue());
-        }
+//        } else if (this.questionType == QuestionType.HOW_MANY_TOTAL) {
+//            this.setSubjectTotalDots(theView.getNumberSlider().valueProperty().getValue().intValue());
+//        }
         this.updatePlayer(correct);
         this.dataWriter.grabData(this);
     }
@@ -530,9 +543,9 @@ public class DotsGameController implements GameController {
     private void paintDotsInPreviewQuestion() {
         graphicsContextPreviewQuestion = theView.getPreviewQuestionCanvas().getGraphicsContext2D();
     	graphicsContextPreviewQuestion.setFill(dotsColorOne);
-    	graphicsContextPreviewQuestion.fillOval(350.0, 55.0, 50.0, 50.0);
+    	graphicsContextPreviewQuestion.fillOval(315, 200.0, 50.0, 50.0);
     	graphicsContextPreviewQuestion.setFill(dotsColorTwo);
-    	graphicsContextPreviewQuestion.fillOval(700.0, 55.0, 50.0, 50.0);
+    	graphicsContextPreviewQuestion.fillOval(665, 200.0, 50.0, 50.0);
     }
     
     /**
@@ -652,9 +665,9 @@ public class DotsGameController implements GameController {
     private void paintDotsInQuestion() {
         graphicsContextQuestion = theView.getQuestionCanvas().getGraphicsContext2D();
     	graphicsContextQuestion.setFill(dotsColorOne);
-    	graphicsContextQuestion.fillOval(350.0, 50.0, 50.0, 50.0);
+    	graphicsContextQuestion.fillOval(300, 80.0, 50.0, 50.0);
     	graphicsContextQuestion.setFill(dotsColorTwo);
-    	graphicsContextQuestion.fillOval(700.0, 50.0, 50.0, 50.0);
+    	graphicsContextQuestion.fillOval(650, 80.0, 50.0, 50.0);
     }
 
     /** 
@@ -708,9 +721,8 @@ public class DotsGameController implements GameController {
         theView.getNumberSlider().setVisible(false);
         theView.getNumberSliderPreview().setVisible(false);
     	theView.getPressSpaceText().setText("Press space to continue");
-    	theView.getNumberSlider().setValue(25.0);
-    	theView.getNumberSliderPreview().setText("" +
-    	theView.getNumberSlider().valueProperty().getValue().intValue());
+    	theView.getNumberSlider().setValue(0.0);
+    	theView.getNumberSliderPreview().setText("");
     	theView.getScene().setCursor(Cursor.NONE);
     }
     

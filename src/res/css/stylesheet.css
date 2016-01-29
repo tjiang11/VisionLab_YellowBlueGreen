@@ -1,0 +1,10 @@
+.slider .axis .axis-tick-mark, .slider .axis .axis-minor-tick-mark {
+    -fx-fill: null;
+    -fx-stroke: #FFFFFF;
+}
+
+.slider .axis {
+    -fx-tick-length: 14;
+    -fx-tick-label-font: 20 system;
+    -fx-tick-label-fill: #FFFFFF;
+}
